@@ -1,0 +1,15 @@
+# .gitignore
+# Node.js dependencies
+node_modules/              # プロジェクトルートのnode_modules (もしあれば)
+cli-tool/node_modules/     # cli-tool の node_modules
+auction-api/node_modules/  # auction-api の node_modules
+
+# Environment variables
+.env                       # プロジェクトルートの .env (もしあれば)
+cli-tool/.env              # cli-tool の .env
+auction-api/.env           # auction-api の .env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+.loggit 
