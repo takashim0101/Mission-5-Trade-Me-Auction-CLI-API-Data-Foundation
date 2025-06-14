@@ -1,11 +1,30 @@
-// auction-api/routes/auctions.js 内
+// auction-api/routes/auctions.js
 const express = require('express');
 const router = express.Router();
 const AuctionItem = require('../models/AuctionItem');
-const { validateSearchAuction } = require('../validation/auctionValidation'); // ★この行を確認
+const { validateSearchAuction } = require('../validation/auctionValidation');
 
-// 検索APIにバリデーションミドルウェアを適用
-router.get('/search', validateSearchAuction, async (req, res) => { // ★この行を確認
+// Route to get all auction items
+// This handles GET /api/auctions requests
+router.get('/', async (req, res) => {
+  try {
+    const items = await AuctionItem.find({}); // Fetch all items
+    const minimalItems = items.map(item => ({
+      id: item._id,
+      title: item.title,
+      start_price: item.start_price
+    }));
+    res.json(minimalItems);
+  } catch (error) {
+    console.error('Error fetching all auction items:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+// Search API with validation middleware
+// This handles GET /api/auctions/search requests
+router.get('/search', validateSearchAuction, async (req, res) => {
   try {
     const { keyword, min_price, max_price } = req.query;
     const query = {};
@@ -41,5 +60,4 @@ router.get('/search', validateSearchAuction, async (req, res) => { // ★この�
   }
 });
 
-// ... その他のルート
 module.exports = router;
